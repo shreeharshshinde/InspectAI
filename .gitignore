@@ -1,0 +1,40 @@
+# Byte-compiled / optimized / C files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.so
+
+# Distribution / packaging
+build/
+dist/
+*.egg-info/
+*.egg
+
+# Virtual Environments 
+/venv/
+/.venv/
+/env/
+/.env/
+
+# Environment Variables
+.env
+.env.*
+
+# IDE / Editor specific files
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Testing artifacts
+.coverage
+htmlcov/
+.pytest_cache/
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Log files
+*.log
