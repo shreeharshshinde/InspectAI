@@ -1,0 +1,21 @@
+<h3>Code Feedback Panel</h3>
+
+<form id="codeFeedbackForm">
+    <textarea name="codeSnippet" rows="10" cols="50" placeholder="Paste your code here..."></textarea><br><br>
+    <button type="button" onclick="showFeedback()">Get Feedback</button>
+</form>
+
+<div id="feedback" style="margin-top:10px; border:1px solid #ccc; padding:10px;"></div>
+
+<script type="text/javascript">
+function showFeedback() {
+    var code = document.querySelector('textarea[name=codeSnippet]').value;
+    if(code.trim() === '') {
+        alert('Please enter some code!');
+        return;
+    }
+    // Basic mock feedback
+    document.getElementById('feedback').innerText = "Mock feedback: Your code has " 
+        + code.split('\n').length + " lines. Check syntax.";
+}
+</script>

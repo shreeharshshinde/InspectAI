@@ -1,0 +1,32 @@
+<atlassian-plugin key="${atlassian.plugin.key}" name="${project.name}" plugins-version="2">
+    <plugin-info>
+        <description>${project.description}</description>
+        <version>${project.version}</version>
+        <vendor name="${project.organization.name}" url="${project.organization.url}" />
+        <param name="plugin-icon">images/pluginIcon.png</param>
+        <param name="plugin-logo">images/pluginLogo.png</param>
+    </plugin-info>
+
+    <!-- add our i18n resource -->
+    <resource type="i18n" name="i18n" location="inspectai"/>
+    
+    <!-- add our web resources -->
+    <web-resource key="inspectai-resources" name="inspectai Web Resources">
+        <dependency>com.atlassian.auiplugin:ajs</dependency>
+        
+        <resource type="download" name="inspectai.css" location="/css/inspectai.css"/>
+        <resource type="download" name="inspectai.js" location="/js/inspectai.js"/>
+        <resource type="download" name="images/" location="/images"/>
+
+        <context>inspectai</context>
+    </web-resource>
+
+    <!-- Code feedback panel -->
+    <web-panel key="code-feedback-panel"
+               location="atl.jira.view.issue.right.context"
+               weight="100">
+        <description>Code Submission Panel</description>
+        <resource type="velocity" name="view" location="templates/code-feedback-panel.vm"/>
+    </web-panel>
+    
+</atlassian-plugin>

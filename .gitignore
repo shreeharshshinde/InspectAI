@@ -1,0 +1,45 @@
+# ----------------------------
+# Maven build output
+# ----------------------------
+target/
+*.log
+
+# ----------------------------
+# IDE / Editor configs
+# ----------------------------
+.idea/
+*.iml
+.vscode/
+*.classpath
+*.project
+*.settings/
+
+# ----------------------------
+# OS-generated files
+# ----------------------------
+.DS_Store
+Thumbs.db
+
+# ----------------------------
+# Atlassian SDK temp files
+# ----------------------------
+*.ipr
+*.iws
+atlassian-plugins-sdk/
+
+# ----------------------------
+# Node / React (if added later)
+# ----------------------------
+node_modules/
+dist/
+build/
+*.env
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ----------------------------
+# Misc
+# ----------------------------
+*.swp
+*.bak
