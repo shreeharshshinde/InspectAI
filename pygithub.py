@@ -8,7 +8,7 @@ load_dotenv()
 GITHUB_TOKEN = os.environ.get('GITHUB_TOKEN')
 TARGET_REPO = 'maplibre/maplibre-gl-js'
 OUTPUT_FILE = 'maplibre_reviews_cleaned.jsonl'
-PRS_TO_FETCH = 50
+PRS_TO_FETCH = 1000
 
 if not GITHUB_TOKEN:
     raise ValueError("GitHub token not found.")
