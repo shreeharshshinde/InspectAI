@@ -8,4 +8,23 @@ Here are the SDK commands you'll use immediately:
 
 Full documentation is always available at:
 
+
+### In root directory
+```
+atlas-mvn clean install -U
+atlas-run
+```
+
+### In Backend directory
+```
+npm install
+npm run dev
+```
+
+### In Frontend directory
+```
+npm install
+npm start
+```
+
 https://developer.atlassian.com/display/DOCS/Introduction+to+the+Atlassian+Plugin+SDK

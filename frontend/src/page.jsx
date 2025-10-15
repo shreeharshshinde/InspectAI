@@ -39,7 +39,7 @@ const Page = () => {
             {[
               "Code correction suggestions",
               "Upper and lower bound map",
-              // "Check string score balance",
+              "Check string score balance",
               // "External price lookup restriction",
               // "DP recursion approach",
               // "TLE cause and fix",

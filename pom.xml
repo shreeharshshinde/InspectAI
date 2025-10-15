@@ -136,5 +136,28 @@
         <maven.compiler.target>1.8</maven.compiler.target>
     </properties>
 
-    
+    <!-- Added new section -->
+    <repositories>
+        <repository>
+            <id>atlassian-public</id>
+            <url>https://maven.atlassian.com/repository/public</url>
+        </repository>
+        <repository>
+            <id>atlassian-m2</id>
+            <url>https://packages.atlassian.com/maven/repository/public</url>
+        </repository>
+    </repositories>
+
+    <pluginRepositories>
+        <pluginRepository>
+            <id>atlassian-public</id>
+            <url>https://maven.atlassian.com/repository/public</url>
+        </pluginRepository>
+        <pluginRepository>
+            <id>atlassian-m2</id>
+            <url>https://packages.atlassian.com/maven/repository/public</url>
+        </pluginRepository>
+    </pluginRepositories>
+
+
 </project>
