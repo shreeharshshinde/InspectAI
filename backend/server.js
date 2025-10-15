@@ -13,7 +13,7 @@ app.get("/issues", async (req, res) => {
     const response = await axios.get(
       "http://localhost:2990/jira/rest/api/2/search",
       {
-        params: { jql: 'project = "IN"' },
+        params: { jql: 'project = "IAI"' },
         auth: { username: "admin", password: "admin" },
       }
     );
@@ -33,7 +33,7 @@ app.post("/create-issue", async (req, res) => {
       "http://localhost:2990/jira/rest/api/2/issue",
       {
         fields: {
-          project: { key: "IN" }, // change "IN" to your project key
+          project: { key: "IAI" }, // change "IN" to your project key
           summary: summary,
           description: description,
           issuetype: { name: issueType || "Task" }, // e.g., "Bug", "Story", "Task"
