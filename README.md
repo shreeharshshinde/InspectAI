@@ -16,16 +16,16 @@ atlas-run
 ```
 
 ### In Backend directory
-##### Make `.env` file
-##### copy paste content of `envExample.txt` to `.env`
+* Make `.env` file
+* copy paste content of `envExample.txt` to `.env`
 ```
 npm install
 npm run dev
 ```
 
 ### In Frontend directory
-##### Make `.env` file
-##### copy paste content of `envExample.txt` to `.env`
+* Make `.env` file
+* copy paste content of `envExample.txt` to `.env`
 ```
 npm install
 npm start
