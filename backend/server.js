@@ -5,50 +5,76 @@ const cors = require("cors");
 
 const app = express();
 app.use(cors());
-app.use(express.json()); // to parse JSON bodies
+app.use(express.json()); // parse JSON bodies
 
-// Get issues
+// ✅ Jira Configuration
+const JIRA_BASE_URL = "http://localhost:2990/jira/rest/api/latest";
+const AUTH = {
+  username: "admin", // replace with your Jira username
+  password: "admin", // replace with your Jira password or API token
+};
+
+// ✅ GET all issues
 app.get("/issues", async (req, res) => {
   try {
-    const response = await axios.get(
-      "http://localhost:2990/jira/rest/api/2/search",
-      {
-        params: { jql: 'project = "IAI"' },
-        auth: { username: "admin", password: "admin" },
-      }
-    );
+    const response = await axios.get(`${JIRA_BASE_URL}/search`, {
+      params: { jql: 'project = "IAI"' },
+      auth: AUTH,
+    });
+
+    // Jira returns { issues: [...] }
     res.json(response.data);
   } catch (err) {
-    console.error(err.message);
-    res.status(500).json({ error: err.message });
+    console.error("❌ Error fetching issues from Jira:");
+    if (err.response) {
+      console.error(err.response.data);
+      res.status(err.response.status).json({
+        error: err.response.data,
+        message: err.response.data?.errorMessages || "Failed to fetch issues",
+      });
+    } else {
+      console.error(err.message);
+      res.status(500).json({ error: err.message });
+    }
   }
 });
 
-// ✅ Create new issue
+// ✅ POST create issue
 app.post("/create-issue", async (req, res) => {
   try {
-    const { summary, description, issueType } = req.body;
+    const { summary, description, assignee, priority, issueType } = req.body;
+
+    const fields = {
+      project: { key: "IAI" },
+      summary,
+      description,
+      issuetype: { name: issueType || "Task" },
+      priority: { name: priority || "Medium" },
+    };
+
+    // only add assignee if provided
+    if (assignee) fields.assignee = { name: assignee };
 
     const response = await axios.post(
-      "http://localhost:2990/jira/rest/api/2/issue",
-      {
-        fields: {
-          project: { key: "IAI" }, // change "IN" to your project key
-          summary: summary,
-          description: description,
-          issuetype: { name: issueType || "Task" }, // e.g., "Bug", "Story", "Task"
-        },
-      },
-      {
-        auth: { username: "admin", password: "admin" },
-      }
+      `${JIRA_BASE_URL}/issue`,
+      { fields },
+      { auth: AUTH }
     );
 
-    res.json({ message: "Issue created successfully!", data: response.data });
+    res.json({ message: "✅ Issue created successfully!", data: response.data });
   } catch (err) {
-    console.error(err.response?.data || err.message);
-    res.status(500).json({ error: err.response?.data || err.message });
+    console.error("❌ Jira Error while creating issue:");
+    if (err.response) {
+      console.error(JSON.stringify(err.response.data, null, 2));
+      res.status(err.response.status).json({
+        error: err.response.data,
+        message: err.response.data?.errorMessages || "Failed to create issue",
+      });
+    } else {
+      console.error(err.message);
+      res.status(500).json({ error: err.message });
+    }
   }
 });
 
-app.listen(5000, () => console.log("Proxy running on port 5000"));
+app.listen(5000, () => console.log("✅ Proxy running on port 5000"));
