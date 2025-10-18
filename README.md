@@ -31,4 +31,5 @@ npm install
 npm start
 ```
 
+### Guide for Atlassian 
 https://developer.atlassian.com/display/DOCS/Introduction+to+the+Atlassian+Plugin+SDK
