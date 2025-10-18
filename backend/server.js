@@ -2,21 +2,26 @@
 const express = require("express");
 const axios = require("axios");
 const cors = require("cors");
+require("dotenv").config(); // Load environment variables
 
 const app = express();
 app.use(cors());
-app.use(express.json()); // to parse JSON bodies
+app.use(express.json());
+
+// Use variables from .env
+const JIRA_BASE_URL = process.env.JIRA_BASE_URL;
+const JIRA_USER = process.env.JIRA_USER;
+const JIRA_PASS = process.env.JIRA_PASS;
+const PROJECT_KEY = process.env.PROJECT_KEY || "IAI";
+const PORT = process.env.PORT || 5000;
 
 // Get issues
 app.get("/issues", async (req, res) => {
   try {
-    const response = await axios.get(
-      "http://localhost:2990/jira/rest/api/2/search",
-      {
-        params: { jql: 'project = "IAI"' },
-        auth: { username: "admin", password: "admin" },
-      }
-    );
+    const response = await axios.get(`${JIRA_BASE_URL}/search`, {
+      params: { jql: `project = "${PROJECT_KEY}"` },
+      auth: { username: JIRA_USER, password: JIRA_PASS },
+    });
     res.json(response.data);
   } catch (err) {
     console.error(err.message);
@@ -24,23 +29,24 @@ app.get("/issues", async (req, res) => {
   }
 });
 
-// ✅ Create new issue
+// Create new issue
 app.post("/create-issue", async (req, res) => {
   try {
-    const { summary, description, issueType } = req.body;
+    const { summary, description, issueType, priority } = req.body;
 
     const response = await axios.post(
-      "http://localhost:2990/jira/rest/api/2/issue",
+      `${JIRA_BASE_URL}/issue`,
       {
         fields: {
-          project: { key: "IAI" }, // change "IN" to your project key
+          project: { key: PROJECT_KEY },
           summary: summary,
           description: description,
-          issuetype: { name: issueType || "Task" }, // e.g., "Bug", "Story", "Task"
+          issuetype: { name: issueType || "Task" },
+          priority: { name: priority || "Medium" },
         },
       },
       {
-        auth: { username: "admin", password: "admin" },
+        auth: { username: JIRA_USER, password: JIRA_PASS },
       }
     );
 
@@ -51,4 +57,6 @@ app.post("/create-issue", async (req, res) => {
   }
 });
 
-app.listen(5000, () => console.log("Proxy running on port 5000"));
+app.listen(PORT, () =>
+  console.log(`Proxy running on port ${PORT}`),
+);

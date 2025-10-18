@@ -1,162 +1,7 @@
-// import React, { useState, useEffect } from "react";
-// import axios from "axios";
-
-// const JiraIssues = () => {
-//   const [issues, setIssues] = useState([]);
-//   const [loading, setLoading] = useState(true);
-//   const [error, setError] = useState(null);
-//   const [showForm, setShowForm] = useState(false);
-//   const [newIssue, setNewIssue] = useState({
-//     summary: "",
-//     description: "",
-//     assignee: "",
-//     priority: "Medium",
-//   });
-
-//   // Fetch issues from backend
-//   const fetchIssues = async () => {
-//     try {
-//       setLoading(true);
-//       const response = await axios.get("http://localhost:5000/issues", {
-//         headers: {
-//           "Cache-Control": "no-cache",
-//           Pragma: "no-cache",
-//         },
-//       });
-//       setIssues(response.data.issues || []);
-//     } catch (err) {
-//       setError(err.response?.data?.error || err.message);
-//     } finally {
-//       setLoading(false);
-//     }
-//   };
-
-//   useEffect(() => {
-//     fetchIssues();
-//   }, []);
-
-//   // Handle form input
-//   const handleChange = (e) => {
-//     setNewIssue({ ...newIssue, [e.target.name]: e.target.value });
-//   };
-
-//   // Submit new issue
-//   const handleSubmit = async (e) => {
-//     e.preventDefault();
-//     try {
-//       await axios.post("http://localhost:5000/issues", newIssue);
-//       alert("Issue created successfully!");
-//       setShowForm(false);
-//       setNewIssue({ summary: "", description: "", assignee: "", priority: "Medium" });
-//       fetchIssues(); // refresh list
-//     } catch (err) {
-//       alert("Failed to create issue: " + (err.response?.data?.error || err.message));
-//     }
-//   };
-
-//   if (loading) return <div>Loading issues...</div>;
-//   if (error) return <div style={{ color: "red" }}>Error: {error}</div>;
-
-//   return (
-//     <div style={{ padding: "20px" }}>
-//       <h1>Jira Issues for Project IN</h1>
-
-//       <button
-//         onClick={() => setShowForm(!showForm)}
-//         style={{
-//           marginBottom: "20px",
-//           padding: "10px 15px",
-//           backgroundColor: "#1976d2",
-//           color: "#fff",
-//           border: "none",
-//           borderRadius: "5px",
-//           cursor: "pointer",
-//         }}
-//       >
-//         {showForm ? "Cancel" : "Add Issue"}
-//       </button>
-
-//       {showForm && (
-//         <form
-//           onSubmit={handleSubmit}
-//           style={{
-//             display: "flex",
-//             flexDirection: "column",
-//             gap: "10px",
-//             marginBottom: "30px",
-//             maxWidth: "400px",
-//           }}
-//         >
-//           <input
-//             type="text"
-//             name="summary"
-//             placeholder="Summary"
-//             value={newIssue.summary}
-//             onChange={handleChange}
-//             required
-//           />
-//           <textarea
-//             name="description"
-//             placeholder="Description"
-//             value={newIssue.description}
-//             onChange={handleChange}
-//             required
-//           />
-//           <input
-//             type="text"
-//             name="assignee"
-//             placeholder="Assignee (optional)"
-//             value={newIssue.assignee}
-//             onChange={handleChange}
-//           />
-//           <select
-//             name="priority"
-//             value={newIssue.priority}
-//             onChange={handleChange}
-//           >
-//             <option>Highest</option>
-//             <option>High</option>
-//             <option>Medium</option>
-//             <option>Low</option>
-//             <option>Lowest</option>
-//           </select>
-//           <button
-//             type="submit"
-//             style={{
-//               padding: "10px 15px",
-//               backgroundColor: "#4caf50",
-//               color: "white",
-//               border: "none",
-//               borderRadius: "5px",
-//               cursor: "pointer",
-//             }}
-//           >
-//             Create Issue
-//           </button>
-//         </form>
-//       )}
-
-//       {issues.length === 0 ? (
-//         <p>No open issues found.</p>
-//       ) : (
-//         <ul>
-//           {issues.map((issue) => (
-//             <li key={issue.key}>
-//               <strong>{issue.key}:</strong> {issue.fields.summary} —{" "}
-//               {issue.fields.status.name}
-//             </li>
-//           ))}
-//         </ul>
-//       )}
-//     </div>
-//   );
-// };
-
-// export default JiraIssues;
-
-
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
 const JiraIssues = () => {
   const [issues, setIssues] = useState([]);
@@ -167,14 +12,14 @@ const JiraIssues = () => {
     summary: "",
     description: "",
     assignee: "",
-    priority: "Medium",
+    priority: "",
   });
 
   // Fetch issues
   const fetchIssues = async () => {
     try {
       setLoading(true);
-      const response = await axios.get("http://localhost:5000/issues", {
+      const response = await axios.get(`${API_BASE_URL}/issues`, {
         headers: { "Cache-Control": "no-cache", Pragma: "no-cache" },
       });
       setIssues(response.data.issues || []);
@@ -195,20 +40,37 @@ const JiraIssues = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const finalIssue = {
+      ...newIssue,
+      priority: newIssue.priority || "Medium",
+    };
+
     try {
-      await axios.post("http://localhost:5000/create-issue", newIssue);
+      await axios.post(`${API_BASE_URL}/create-issue`, finalIssue);
       fetchIssues(); // refresh issues
       setShowModal(false);
-      setNewIssue({ summary: "", description: "", assignee: "", priority: "Medium" });
+      setNewIssue({ summary: "", description: "", assignee: "", priority: "" }); // reset
     } catch (err) {
-      alert("❌ Failed to create issue: " + (err.response?.data?.error || err.message));
+      alert(
+        "❌ Failed to create issue: " +
+        (err.response?.data?.error || err.message)
+      );
     }
   };
 
   if (loading)
-    return <div className="text-center text-gray-400 text-lg mt-10">Loading issues...</div>;
+    return (
+      <div className="text-center text-gray-400 text-lg mt-10">
+        Loading issues...
+      </div>
+    );
   if (error)
-    return <div className="text-red-500 text-center text-lg mt-10">Error: {error}</div>;
+    return (
+      <div className="text-red-500 text-center text-lg mt-10">
+        Error: {error}
+      </div>
+    );
 
   return (
     <div className="min-h-screen py-10 px-6 bg-gray-900 text-gray-200">
@@ -229,7 +91,9 @@ const JiraIssues = () => {
 
         {/* Issue List */}
         {issues.length === 0 ? (
-          <p className="text-center text-gray-400 text-lg">No open issues found.</p>
+          <p className="text-center text-gray-400 text-lg">
+            No open issues found.
+          </p>
         ) : (
           <ul className="space-y-3">
             {issues.map((issue) => (
@@ -249,11 +113,10 @@ const JiraIssues = () => {
                   </p>
                 </div>
                 <span
-                  className={`text-xs px-3 py-1 rounded-full ${
-                    issue.fields.priority?.name === "High"
+                  className={`text-xs px-3 py-1 rounded-full ${issue.fields.priority?.name === "High"
                       ? "bg-red-700 text-red-100"
                       : "bg-indigo-700 text-indigo-100"
-                  }`}
+                    }`}
                 >
                   {issue.fields.priority?.name || "Medium"}
                 </span>
@@ -305,18 +168,21 @@ const JiraIssues = () => {
                   onChange={handleChange}
                   className="w-full p-3 bg-gray-900 border border-gray-700 rounded-lg focus:ring-2 focus:ring-indigo-400 focus:outline-none text-gray-200 placeholder-gray-400"
                 />
+
                 <select
                   name="priority"
                   value={newIssue.priority}
                   onChange={handleChange}
                   className="w-full p-3 bg-gray-900 border border-gray-700 rounded-lg focus:ring-2 focus:ring-indigo-400 focus:outline-none text-gray-200"
                 >
-                  <option>Highest</option>
-                  <option>High</option>
-                  <option>Medium</option>
-                  <option>Low</option>
-                  <option>Lowest</option>
+                  <option value="">Select Priority</option>
+                  <option value="Highest">Highest</option>
+                  <option value="High">High</option>
+                  <option value="Medium">Medium</option>
+                  <option value="Low">Low</option>
+                  <option value="Lowest">Lowest</option>
                 </select>
+
                 <button
                   type="submit"
                   className="w-full bg-green-500 hover:bg-green-600 text-white py-2 rounded-lg font-medium transition-all duration-300"
