@@ -1,5 +1,0 @@
-PORT=5000
-JIRA_BASE_URL=http://localhost:2990/jira/rest/api/2
-JIRA_USER=admin
-JIRA_PASS=admin
-PROJECT_KEY=IAI
