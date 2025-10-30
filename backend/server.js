@@ -3,10 +3,17 @@ const express = require("express");
 const axios = require("axios");
 const cors = require("cors");
 require("dotenv").config(); // Load environment variables
+const codeRoutes =require("./routes/codeRoutes");
+const reviewRoutes=require("./routes/reviewRoutes");
+const { connectDB } = require("./config/db");
 
 const app = express();
 app.use(cors());
 app.use(express.json());
+
+app.use("/api",codeRoutes);
+app.use("/api",reviewRoutes);
+
 
 // Use variables from .env
 const JIRA_BASE_URL = process.env.JIRA_BASE_URL;
@@ -80,6 +87,11 @@ app.get("/user", async (req, res) => {
     res.status(500).json({ message: "Failed to fetch Jira user" });
   }
 });
+
+app.use("/api/code" , codeRoutes) ;
+app.use("/api/review" , reviewRoutes) ;
+
+connectDB();
 
 app.listen(PORT, () =>
   console.log(`Proxy running on port ${PORT}`),
