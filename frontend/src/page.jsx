@@ -1,8 +1,25 @@
-import React from "react";
-import { FiPlus, FiSearch, FiFolder, FiMic, FiSend } from "react-icons/fi";
+import React, { useEffect, useState } from "react";
+import { FiPlus, FiSearch, FiFolder, FiMic, FiSend, FiCheckCircle, FiAlertCircle } from "react-icons/fi";
 import JiraIssues from "./components/JiraIssues";
+import { Link } from "react-router-dom";
+import axios from "axios";
 
 const Page = () => {
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const fetchJiraUser = async () => {
+      try {
+        const response = await axios.get("http://localhost:5000/user");
+        setUser(response.data);
+      } catch (error) {
+        console.error("Error fetching Jira user:", error);
+      }
+    };
+
+    fetchJiraUser();
+  }, []);
+
   return (
     <div className="flex h-screen bg-gray-900 text-gray-200 font-sans">
       {/* Sidebar */}
@@ -31,30 +48,29 @@ const Page = () => {
               <FiFolder className="text-lg" /> 
               Projects
             </button>
+
+            <Link to='/code-review'>
+              <button className="flex items-center gap-3 w-full p-2 rounded-lg hover:bg-gray-700 transition-colors">
+                <FiCheckCircle className="text-lg" /> 
+                Code Review
+              </button>
+            </Link>
+            <Link to='/raise-issues'>
+              <button className="flex items-center gap-3 w-full p-2 rounded-lg hover:bg-gray-700 transition-colors">
+                <FiAlertCircle className="text-lg" /> 
+                Raise Issues
+              </button>
+            </Link>
           </div>
 
           {/* Recent Chats */}
           <div className="mt-6 border-t border-gray-700 mx-3 pt-4 space-y-1">
             <p className="text-sm font-semibold text-gray-400 px-2 mb-2">Recent Chats</p>
-            {[
-              "Code correction suggestions",
-              "Upper and lower bound map",
-              "Check string score balance",
-              // "External price lookup restriction",
-              // "DP recursion approach",
-              // "TLE cause and fix",
-              // "Check code logic",
-              // "Space optimized DP conversion",
-              // "Code issue debugging",
-              // "Potion brewing optimization",
-              // "Minimum distance calculation",
-              // "Create Jira plugin steps",
-              // "Code review automation",
-            ].map((item, index) => (
+            {["Code correction suggestions", "Upper and lower bound map", "Check string score balance"].map((item, index) => (
               <button
                 key={index}
                 className="block w-full text-left text-sm text-gray-300 truncate p-2 rounded-lg hover:bg-gray-700 transition-colors px-3"
-                title={item} // Show full text on hover
+                title={item}
               >
                 {item}
               </button>
@@ -62,21 +78,30 @@ const Page = () => {
           </div>
         </div>
 
-        {/* User Profile */}
+        {/* ✅ Dynamic User Profile */}
         <div className="p-4 border-t border-gray-700">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-full bg-indigo-600 flex items-center justify-center text-sm font-semibold">
-                V
-              </div>
+              {user && user.avatar ? (
+                <img
+                  src={user.avatar}
+                  alt="User Avatar"
+                  className="w-8 h-8 rounded-full"
+                />
+              ) : (
+                <div className="w-8 h-8 rounded-full bg-indigo-600 flex items-center justify-center text-sm font-semibold">
+                  {user ? user.name.charAt(0) : "?"}
+                </div>
+              )}
               <div>
-                <p className="text-sm font-semibold">Vrushali Sangale</p>
-                <p className="text-xs text-gray-400">Free Plan</p>
+                <p className="text-sm font-semibold">
+                  {user ? user.name : "Loading..."}
+                </p>
+                <p className="text-xs text-gray-400">
+                  {user ? user.email : ""}
+                </p>
               </div>
             </div>
-            <button className="text-xs px-3 py-1 bg-indigo-600 rounded-lg hover:bg-indigo-700 transition-colors">
-              Upgrade
-            </button>
           </div>
         </div>
       </div>
@@ -96,8 +121,6 @@ const Page = () => {
             <h1 className="text-4xl font-semibold mb-6 bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">
               What would you like to explore today?
             </h1>
-            
-            {/* Input Area */}
             <div className="flex items-center bg-gray-800 px-6 py-4 rounded-2xl w-full max-w-2xl shadow-lg border border-gray-700">
               <FiPlus className="text-gray-400 text-lg mr-3" />
               <input
@@ -110,30 +133,12 @@ const Page = () => {
                 <FiSend className="text-gray-400 text-lg cursor-pointer hover:text-white transition-colors" />
               </div>
             </div>
-
-            {/* Quick Suggestions */}
-            {/* <div className="grid grid-cols-2 gap-3 mt-8 max-w-md mx-auto">
-              {[
-                "Explain quantum computing",
-                "Write a poem about AI",
-                "How to learn React?",
-                "Best practices for coding"
-              ].map((suggestion, index) => (
-                <button
-                  key={index}
-                  className="bg-gray-800 hover:bg-gray-700 border border-gray-700 rounded-xl p-3 text-sm transition-colors text-left"
-                >
-                  {suggestion}
-                </button>
-              ))}
-            </div> */}
           </div>
         </div>
 
+        {/* Jira Issues */}
         <div className="flex-1 flex flex-col overflow-y-auto">
-            {/* Your existing content */}
-            {/* Add Jira Issues Component Below */}
-            <JiraIssues />
+          <JiraIssues />
         </div>
 
         {/* Footer */}

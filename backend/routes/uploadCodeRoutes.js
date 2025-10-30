@@ -1,5 +1,5 @@
 import express from "express";
-import { uploadCode } from "../controllers/codeController.js";
+import { uploadCode } from "../controllers/uploadCodeController.js";
 
 const router = express.Router();
 router.post("/upload", uploadCode);
