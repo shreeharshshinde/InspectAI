@@ -5,3 +5,4 @@ const router = express.Router();
 router.post("/user", userController);
 
 export default router;
+

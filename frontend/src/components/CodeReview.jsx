@@ -1,126 +1,3 @@
-// import React, { useState } from "react";
-// import axios from "axios";
-
-// const CodeReview = () => {
-//   const [formData, setFormData] = useState({
-//     title: "",
-//     language: "",
-//     content: "",
-//   });
-//   const [reviewResult, setReviewResult] = useState(null);
-//   const [loading, setLoading] = useState(false);
-
-//   const backendURL = process.env.REACT_APP_BackendURl;
-
-//   const handleChange = (e) => {
-//     setFormData({ ...formData, [e.target.name]: e.target.value });
-//   };
-
-//   const handleSubmit = async (e) => {
-//     e.preventDefault();
-//     setLoading(true);
-//     setReviewResult(null);
-
-//     try {
-//       const response = await axios.post(`${backendURL}/review`, formData);
-//       setReviewResult(response.data.review || "✅ Code review generated successfully!");
-//     } catch (err) {
-//       setReviewResult("❌ Failed to generate code review.");
-//       console.error(err);
-//     } finally {
-//       setLoading(false);
-//     }
-//   };
-
-//   return (
-//     <div className="min-h-screen bg-gray-900 text-gray-200 p-4 sm:p-6 md:p-8 flex items-center justify-center">
-//       <div className="w-full max-w-4xl bg-gray-800 p-6 sm:p-8 rounded-2xl shadow-lg border border-gray-700">
-//         <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-indigo-400 mb-6 text-center">
-//           Code Review Assistant
-//         </h1>
-
-//         {/* Code Review Form */}
-//         <form onSubmit={handleSubmit} className="space-y-5">
-//           <div>
-//             <label className="block mb-2 text-sm font-medium text-gray-400">
-//               Title
-//             </label>
-//             <input
-//               type="text"
-//               name="title"
-//               value={formData.title}
-//               onChange={handleChange}
-//               required
-//               className="w-full p-3 bg-gray-900 border border-gray-700 rounded-lg focus:ring-2 focus:ring-indigo-400 focus:outline-none text-gray-200 text-sm sm:text-base"
-//               placeholder="Enter code title..."
-//             />
-//           </div>
-
-//           <div>
-//             <label className="block mb-2 text-sm font-medium text-gray-400">
-//               Language
-//             </label>
-//             <select
-//               name="language"
-//               value={formData.language}
-//               onChange={handleChange}
-//               required
-//               className="w-full p-3 bg-gray-900 border border-gray-700 rounded-lg focus:ring-2 focus:ring-indigo-400 focus:outline-none text-gray-200 text-sm sm:text-base"
-//             >
-//               <option value="">Select a language</option>
-//               <option value="JavaScript">JavaScript</option>
-//               <option value="Python">Python</option>
-//               <option value="C++">C++</option>
-//               <option value="Java">Java</option>
-//               <option value="C">C</option>
-//               <option value="TypeScript">TypeScript</option>
-//             </select>
-//           </div>
-
-//           <div>
-//             <label className="block mb-2 text-sm font-medium text-gray-400">
-//               Content
-//             </label>
-//             <textarea
-//               name="content"
-//               value={formData.content}
-//               onChange={handleChange}
-//               required
-//               rows="8"
-//               className="w-full p-3 bg-gray-900 border border-gray-700 rounded-lg focus:ring-2 focus:ring-indigo-400 focus:outline-none text-gray-200 text-sm sm:text-base"
-//               placeholder="Paste your code here..."
-//             ></textarea>
-//           </div>
-
-//           <button
-//             type="submit"
-//             disabled={loading}
-//             className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 sm:py-3 rounded-lg transition-all duration-300 text-sm sm:text-base"
-//           >
-//             {loading ? "Analyzing Code..." : "Submit for Review"}
-//           </button>
-//         </form>
-
-//         {/* Review Result */}
-//         {reviewResult && (
-//           <div className="mt-8 bg-gray-900 border border-gray-700 rounded-lg p-4 sm:p-6 text-gray-300 overflow-x-auto">
-//             <h2 className="text-lg sm:text-xl font-semibold text-indigo-400 mb-3">
-//               Review Result:
-//             </h2>
-//             <pre className="whitespace-pre-wrap break-words text-sm sm:text-base leading-relaxed">
-//               {reviewResult}
-//             </pre>
-//           </div>
-//         )}
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default CodeReview;
-
-
-
 
 import React, { useState } from "react";
 import axios from "axios";
@@ -259,14 +136,20 @@ const CodeReview = () => {
               Latest Review Result:
             </h2>
             <pre className="whitespace-pre-wrap">{reviewResult}</pre>
+            <div className="mt-3 text-xs text-gray-500 flex justify-between">
+                  <span>
+                    ⭐ <strong>7/10</strong>
+                  </span>
+                </div>
           </div>
+          
         )}
 
         {/* All Reviews */}
-        {reviews.length > 0 && (
+        {/* {reviews.length > 0 && (
           <div className="mt-8 bg-gray-800 border border-gray-700 rounded-lg p-6">
             <h2 className="text-xl font-semibold text-indigo-400 mb-4 text-center">
-              AI Review Feedback
+              Review Feedback
             </h2>
 
             {reviews.map((rev, idx) => (
@@ -281,13 +164,12 @@ const CodeReview = () => {
                   <span>
                     ⭐ <strong>{rev.rating}/10</strong>
                   </span>
-                  <span>{rev.reviewType === "AI" ? "🤖 AI Generated" : "👤 Manual"}</span>
                   <span>{new Date(rev.createdAt).toLocaleString()}</span>
                 </div>
               </div>
             ))}
           </div>
-        )}
+        )} */}
 
         {/* Display Code ID */}
         {codeId && (
