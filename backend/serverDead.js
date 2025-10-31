@@ -1,20 +1,20 @@
 // server.js
-const express = require("express");
-const axios = require("axios");
-const cors = require("cors");
-require("dotenv").config();
+import express from "express";
+import axios from "axios";
+import cors from "cors";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 const app = express();
 app.use(cors());
 app.use(express.json());
-
 
 const JIRA_BASE_URL = process.env.JIRA_BASE_URL;
 const JIRA_USER = process.env.JIRA_USER;
 const JIRA_PASS = process.env.JIRA_PASS;
 const PROJECT_KEY = process.env.PROJECT_KEY || "IAI";
 const PORT = process.env.PORT || 5000;
-
 
 app.get("/issues", async (req, res) => {
   try {
@@ -29,7 +29,6 @@ app.get("/issues", async (req, res) => {
   }
 });
 
-
 app.post("/create-issue", async (req, res) => {
   try {
     const { summary, description, issueType, priority } = req.body;
@@ -39,8 +38,8 @@ app.post("/create-issue", async (req, res) => {
       {
         fields: {
           project: { key: PROJECT_KEY },
-          summary: summary,
-          description: description,
+          summary,
+          description,
           issuetype: { name: issueType || "Task" },
           priority: { name: priority || "Medium" },
         },
@@ -57,7 +56,4 @@ app.post("/create-issue", async (req, res) => {
   }
 });
 
-app.listen(PORT, () =>
-  console.log(`Proxy running on port ${PORT}`),
-);
-
+app.listen(PORT, () => console.log(`Proxy running on port ${PORT}`));
