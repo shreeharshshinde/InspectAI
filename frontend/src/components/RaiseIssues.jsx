@@ -1,5 +1,17 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { Link } from "react-router-dom";
+import {
+  FiArrowLeft,
+  FiAlertCircle,
+  FiFlag,
+  FiFileText,
+  FiSend,
+  FiCheckCircle,
+  FiXCircle,
+  FiType,
+  FiBarChart2
+} from "react-icons/fi";
 
 const RaiseIssue = () => {
   const [issue, setIssue] = useState({
@@ -21,8 +33,8 @@ const RaiseIssue = () => {
     setMessage("");
 
     try {
-      const response = await axios.post("http://localhost:5000/create-issue", issue);
-      setMessage("success: Issue created successfully!");
+      await axios.post("http://localhost:5000/create-issue", issue);
+      setMessage("✅ Issue created successfully!");
       setIssue({
         summary: "",
         description: "",
@@ -31,89 +43,68 @@ const RaiseIssue = () => {
       });
     } catch (err) {
       console.error("Error creating issue:", err.response?.data || err.message);
-      setMessage("error: Failed to create issue. Please check your connection and try again.");
+      setMessage("❌ Failed to create issue. Check your Jira connection.");
     } finally {
       setLoading(false);
     }
   };
 
-  const getPriorityColor = (priority) => {
-    switch (priority) {
-      case "Highest": return "bg-red-500";
-      case "High": return "bg-orange-500";
-      case "Medium": return "bg-yellow-500";
-      case "Low": return "bg-green-500";
-      case "Lowest": return "bg-blue-500";
-      default: return "bg-gray-500";
-    }
-  };
-
-  const getIssueTypeIcon = (type) => {
-    switch (type) {
-      case "Bug": return "🐛";
-      case "Story": return "📖";
-      case "Epic": return "🎯";
-      case "Task": return "✅";
-      default: return "📝";
-    }
-  };
+  const success = message.includes("✅");
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center p-4">
-      <div className="w-full max-w-2xl">
-        {/* Header */}
-        <div className="text-center mb-8">
-          <div className="flex items-center justify-center mb-4">
-            <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-purple-600 rounded-xl flex items-center justify-center mr-3 shadow-lg">
-              <span className="text-white font-bold text-xl">+</span>
-            </div>
-            <h1 className="text-4xl font-bold bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
-              Create New Issue
-            </h1>
-          </div>
-          <p className="text-gray-400 text-lg">
-            Quickly raise and track new tasks, bugs, or stories
-          </p>
-        </div>
+    <div className="min-h-screen aurora-bg p-6">
+      <div className="max-w-3xl mx-auto">
+        <div className="card-aurora p-6 rounded-2xl border-aurora/20">
+          {/* Header */}
+          <div className="flex items-center gap-4 mb-6">
+            <Link
+              to="/"
+              className="inline-flex items-center gap-2 px-3 py-2 rounded-md hover:bg-aurora-hover transition"
+            >
+              <FiArrowLeft className="text-aurora-muted" />
+              <span className="text-sm text-aurora-muted">Back to Dashboard</span>
+            </Link>
 
-        {/* Form Card */}
-        <div className="bg-slate-800/50 backdrop-blur-sm border border-slate-700 rounded-2xl shadow-2xl overflow-hidden">
-          {/* Form Header */}
-          <div className="bg-gradient-to-r from-slate-800 to-slate-700 p-6 border-b border-slate-600">
-            <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 bg-blue-500 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold">📋</span>
+            <div className="ml-auto flex items-center gap-3">
+              <div className="w-12 h-12 rounded-lg logo-aurora flex items-center justify-center">
+                <FiFlag className="text-white" />
               </div>
               <div>
-                <h2 className="text-xl font-semibold text-white">Issue Details</h2>
-                <p className="text-gray-400 text-sm">Fill in the required information below</p>
+                <h2 className="text-lg font-semibold">Raise Issue</h2>
+                <p className="text-xs text-aurora-muted">Create new project issues</p>
               </div>
             </div>
           </div>
 
-          <form onSubmit={handleSubmit} className="p-6 space-y-6">
-            {/* Summary Field */}
-            <div className="space-y-2">
-              <label className="block text-sm font-medium text-gray-300 flex items-center">
-                <span className="bg-blue-500/20 text-blue-400 text-xs px-2 py-1 rounded mr-2">Required</span>
-                Issue Title
+          {/* Form */}
+          <div className="mb-6 text-center">
+            <div className="w-16 h-16 rounded-lg mx-auto mb-3 flex items-center justify-center bg-gradient-to-br from-purple-500 to-pink-500">
+              <FiAlertCircle className="text-white text-2xl" />
+            </div>
+            <h3 className="text-2xl font-bold mb-1 text-white">Raise New Issue</h3>
+            <p className="text-sm text-aurora-muted">Create and track new project issues</p>
+          </div>
+
+          <form onSubmit={handleSubmit} className="space-y-5">
+            {/* Summary */}
+            <div>
+              <label className="text-sm text-aurora-muted mb-2 block flex items-center gap-2">
+                <FiFileText /> Issue Summary
               </label>
               <input
-                type="text"
                 name="summary"
                 value={issue.summary}
                 onChange={handleChange}
                 required
-                placeholder="What needs to be done? e.g., 'Fix login page responsive layout'"
-                className="w-full p-4 bg-slate-900 border border-slate-600 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:outline-none text-white placeholder-gray-500 transition-all duration-300"
+                placeholder="What's the issue about?"
+                className="input-aurora"
               />
             </div>
 
-            {/* Description Field */}
-            <div className="space-y-2">
-              <label className="block text-sm font-medium text-gray-300 flex items-center">
-                <span className="bg-blue-500/20 text-blue-400 text-xs px-2 py-1 rounded mr-2">Required</span>
-                Description
+            {/* Description */}
+            <div>
+              <label className="text-sm text-aurora-muted mb-2 block flex items-center gap-2">
+                <FiType /> Description
               </label>
               <textarea
                 name="description"
@@ -121,128 +112,103 @@ const RaiseIssue = () => {
                 onChange={handleChange}
                 required
                 rows="5"
-                placeholder="Describe the issue in detail. Include steps to reproduce, expected behavior, and actual behavior..."
-                className="w-full p-4 bg-slate-900 border border-slate-600 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:outline-none text-white placeholder-gray-500 resize-none transition-all duration-300"
+                placeholder="Describe the issue in detail..."
+                className="input-aurora min-h-[120px] resize-y"
               />
             </div>
 
-            {/* Type and Priority Row */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {/* Issue Type */}
-              <div className="space-y-2">
-                <label className="block text-sm font-medium text-gray-300">
-                  Issue Type
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="text-sm text-aurora-muted mb-2 block flex items-center gap-2">
+                  <FiBarChart2 /> Issue Type
                 </label>
-                <div className="relative">
-                  <select
-                    name="issueType"
-                    value={issue.issueType}
-                    onChange={handleChange}
-                    className="w-full p-4 bg-slate-900 border border-slate-600 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:outline-none text-white appearance-none transition-all duration-300"
-                  >
-                    <option value="Task">Task</option>
-                    <option value="Bug">Bug</option>
-                    <option value="Story">Story</option>
-                    <option value="Epic">Epic</option>
-                  </select>
-                  <div className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400">
-                    <span className="text-lg">{getIssueTypeIcon(issue.issueType)}</span>
-                  </div>
-                </div>
+                <select
+                  name="issueType"
+                  value={issue.issueType}
+                  onChange={handleChange}
+                  className="input-aurora"
+                >
+                  <option value="Task"  className="text-black">📝 Task</option>
+                  <option value="Bug"  className="text-black">🐛 Bug</option>
+                  <option value="Story"  className="text-black">📖 Story</option>
+                  <option value="Epic"  className="text-black">🎯 Epic</option>
+                </select>
               </div>
 
-              {/* Priority */}
-              <div className="space-y-2">
-                <label className="block text-sm font-medium text-gray-300">
-                  Priority
+              <div>
+                <label className="text-sm text-aurora-muted mb-2 block flex items-center gap-2">
+                  <FiFlag /> Priority
                 </label>
-                <div className="relative">
-                  <select
-                    name="priority"
-                    value={issue.priority}
-                    onChange={handleChange}
-                    className="w-full p-4 bg-slate-900 border border-slate-600 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:outline-none text-white appearance-none transition-all duration-300"
-                  >
-                    <option value="Highest">Highest</option>
-                    <option value="High">High</option>
-                    <option value="Medium">Medium</option>
-                    <option value="Low">Low</option>
-                    <option value="Lowest">Lowest</option>
-                  </select>
-                  <div className="absolute right-4 top-1/2 transform -translate-y-1/2">
-                    <div className={`w-3 h-3 rounded-full ${getPriorityColor(issue.priority)}`}></div>
-                  </div>
-                </div>
+                <select
+                  name="priority"
+                  value={issue.priority}
+                  onChange={handleChange}
+                  className="input-aurora"
+                >
+                  <option value="Highest"  className="text-black">🔴 Highest</option>
+                  <option value="High"  className="text-black">🟠 High</option>
+                  <option value="Medium"  className="text-black">🔵 Medium</option>
+                  <option value="Low"  className="text-black">🟢 Low</option>
+                  <option value="Lowest"  className="text-black">⚪ Lowest</option>
+                </select>
               </div>
             </div>
 
-            {/* Preview Card */}
-            {(issue.summary || issue.description) && (
-              <div className="bg-slate-700/50 border border-slate-600 rounded-xl p-4 mt-4">
-                <h3 className="text-sm font-medium text-gray-300 mb-3">Preview</h3>
-                <div className="space-y-2">
-                  {issue.summary && (
-                    <div className="flex items-start space-x-2">
-                      <span className="text-blue-400 mt-1">•</span>
-                      <span className="text-white text-sm">{issue.summary}</span>
-                    </div>
-                  )}
-                  {issue.description && (
-                    <div className="flex items-start space-x-2">
-                      <span className="text-gray-500 mt-1">•</span>
-                      <span className="text-gray-400 text-sm">{issue.description}</span>
-                    </div>
-                  )}
-                </div>
-              </div>
-            )}
-
-            {/* Submit Button */}
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full py-4 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 rounded-xl font-semibold text-white shadow-lg transition-all duration-300 transform hover:scale-[1.02] disabled:opacity-50 disabled:transform-none flex items-center justify-center space-x-2"
-            >
-              {loading ? (
-                <>
-                  <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                  <span>Creating Issue...</span>
-                </>
-              ) : (
-                <>
-                  <span>🚀</span>
-                  <span>Create Issue</span>
-                </>
-              )}
-            </button>
+            {/* Submit */}
+            <div>
+              <button
+                type="submit"
+                disabled={loading}
+                className="btn-aurora w-full"
+              >
+                {loading ? (
+                  <>
+                    <div className="loader-aurora mr-2" />
+                    Creating Issue...
+                  </>
+                ) : (
+                  <>
+                    <FiSend className="mr-2" />
+                    Create Issue
+                  </>
+                )}
+              </button>
+            </div>
           </form>
 
-          {/* Result Message */}
+          {/* Message */}
           {message && (
-            <div className={`px-6 pb-6 ${message.startsWith("success:") ? 'animate-pulse' : ''}`}>
-              <div className={`p-4 rounded-xl border ${
-                message.startsWith("success:") 
-                  ? 'bg-green-500/20 border-green-500 text-green-400' 
-                  : 'bg-red-500/20 border-red-500 text-red-400'
-              }`}>
-                <div className="flex items-center space-x-2">
-                  <span className="text-lg">
-                    {message.startsWith("success:") ? '✅' : '❌'}
-                  </span>
-                  <span className="font-medium">
-                    {message.replace(/^(success|error):\s*/, "")}
-                  </span>
+            <div className={`mt-5 p-4 rounded-lg border ${success ? "bg-emerald-800/20 border-aurora-green" : "bg-rose-800/18 border-aurora-red"}`}>
+              <div className="flex items-start gap-3">
+                {success ? (
+                  <FiCheckCircle className="text-aurora-green text-xl" />
+                ) : (
+                  <FiXCircle className="text-aurora-red text-xl" />
+                )}
+                <div>
+                  <p className="font-medium">{message}</p>
+                  {success && <p className="text-xs text-aurora-muted mt-1">Issue has been created and tracked.</p>}
                 </div>
               </div>
             </div>
           )}
-        </div>
 
-        {/* Quick Tips */}
-        <div className="mt-6 text-center">
-          <p className="text-gray-500 text-sm">
-            💡 Tip: Be specific and include reproduction steps for bugs
-          </p>
+          {/* Preview */}
+          {(issue.summary || issue.description) && (
+            <div className="preview-card mt-6">
+              <h4 className="text-sm font-semibold mb-2 flex items-center gap-2">
+                <FiFileText /> Issue Preview
+              </h4>
+              <div className="text-aurora-muted">
+                {issue.summary && <p className="font-medium text-white">{issue.summary}</p>}
+                {issue.description && <p className="mt-1 text-sm">{issue.description}</p>}
+                <div className="mt-3 text-xs flex gap-4 text-aurora-muted">
+                  <span>Type: {issue.issueType}</span>
+                  <span>Priority: {issue.priority}</span>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>

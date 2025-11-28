@@ -3,6 +3,8 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-d
 import Page from './page'; 
 import CodeReview from "./components/CodeReview";
 import RaiseIssues from "./components/RaiseIssues";
+import ChatPage from "./pages/ChatPage";
+import './index.css'
 
 const App = () => {
   return (
@@ -16,6 +18,8 @@ const App = () => {
 
         {/* Raise Issues page */}
         <Route path="/raise-issues" element={<RaiseIssues />} />
+
+        <Route path="/chat/:id" element={<ChatPage />} />
 
         {/* Redirect unknown paths */}
         <Route path="*" element={<Navigate to="/" replace />} />
