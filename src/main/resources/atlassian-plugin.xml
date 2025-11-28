@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<atlassian-plugin key="${atlassian.plugin.key}" name="${project.name}" plugins-version="2"> 
+  <plugin-info> 
+    <description>${project.description}</description>  
+    <version>${project.version}</version>  
+    <vendor name="${project.organization.name}" url="${project.organization.url}"/>  
+    <param name="plugin-icon">images/pluginIcon.png</param>  
+    <param name="plugin-logo">images/pluginLogo.png</param> 
+  </plugin-info>  
+  <!-- add our i18n resource -->  
+  <resource type="i18n" name="i18n" location="myPlugin"/>  
+  <!-- add our web resources -->  
+  <web-resource key="myPlugin-resources" name="myPlugin Web Resources"> 
+    <dependency>com.atlassian.auiplugin:ajs</dependency>  
+    <resource type="download" name="myPlugin.css" location="/css/myPlugin.css"/>  
+    <resource type="download" name="myPlugin.js" location="/js/myPlugin.js"/>  
+    <resource type="download" name="images/" location="/images"/>  
+    <context>myPlugin</context> 
+  </web-resource>  
+  <web-section name="tools-section" i18n-name-key="tools-section.name" key="tools-section" location="plugins-link" weight="1000"> 
+    <description key="tools-section.description">Tools Section</description>  
+    <label key="tools-section.label">Tools</label> 
+  </web-section>  
+  <web-item name="Plugins" i18n-name-key="plugins.name" key="plugins" section="system.top.navigation.bar" weight="1000"> 
+    <description key="plugins.description">Plugins Menu</description>  
+    <label key="plugins.label">Plugins</label>  
+    <link linkId="plugins-link">plugins</link> 
+  </web-item>  
+  <web-item name="Inspect-AI" i18n-name-key="inspect-ai.name" key="inspect-ai" section="plugins-link/tools-section" weight="1000"> 
+    <description key="inspect-ai.description">Inspect-AI File Analysis Tool</description>  
+    <label key="inspect-ai.label">Inspect-AI</label>  
+    <link linkId="inspect-ai-link">http://localhost:3000</link> 
+  </web-item>
+</atlassian-plugin>

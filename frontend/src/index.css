@@ -1,0 +1,189 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* any custom styles can go here after Tailwind */
+
+
+
+/* Aurora theme additions — paste into src/index.css after Tailwind directives */
+
+/* palette tokens */
+:root{
+  --aurora-bg-1: rgba(18,8,28,0.9);
+  --aurora-grad-1: rgba(201,45,255,0.28);
+  --aurora-grad-2: rgba(255,65,170,0.22);
+  --aurora-glow: rgba(150,40,255,0.14);
+  --aurora-muted: rgba(255,255,255,0.65);
+  --aurora: rgba(200,120,255,0.95);
+}
+
+/* overall background with soft radial aurora accents */
+.aurora-bg{
+  background: radial-gradient(600px 400px at 10% 20%, rgba(120,40,255,0.12), transparent),
+              radial-gradient(500px 300px at 90% 80%, rgba(255,40,150,0.08), transparent),
+              linear-gradient(180deg, #07040c 0%, #0d0920 100%);
+  min-height:100vh;
+  background-attachment: fixed;
+}
+
+/* glassy card used everywhere */
+.card-aurora{
+  background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+  backdrop-filter: blur(12px) saturate(120%);
+  -webkit-backdrop-filter: blur(12px) saturate(120%);
+  border-radius: 18px;
+  border: 1px solid rgba(255,255,255,0.04);
+  box-shadow: 0 6px 30px rgba(10,6,20,0.6), 0 0 40px var(--aurora-glow);
+}
+
+/* logo badge */
+.logo-aurora{
+  width:44px;height:44px;border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+  background: linear-gradient(135deg, rgba(120,40,255,0.3), rgba(255,40,150,0.3));
+  box-shadow: 0 6px 18px rgba(120,40,255,0.08);
+}
+
+/* action items in sidebar */
+.action-item{ display:flex; align-items:center; gap:12px; padding:8px; border-radius:10px; transition: all .18s ease; }
+.action-item:hover{ transform: translateY(-2px); background: rgba(255,255,255,0.02); }
+.action-icon{ width:36px;height:36px; display:flex; align-items:center; justify-content:center; border-radius:8px; }
+
+/* soft color variants for icons */
+.bg-aurora-soft{ background: linear-gradient(135deg, rgba(120,40,255,0.08), rgba(255,40,150,0.06)); }
+.bg-aurora-blue-soft{ background: linear-gradient(135deg, rgba(60,130,255,0.06), rgba(120,180,255,0.03)); }
+.bg-aurora-green-soft{ background: linear-gradient(135deg, rgba(72,255,188,0.06), rgba(72,255,188,0.03)); }
+.bg-aurora-purple-soft{ background: linear-gradient(135deg, rgba(150,80,255,0.06), rgba(150,80,255,0.03)); }
+.bg-aurora-red-soft{ background: linear-gradient(135deg, rgba(255,60,100,0.06), rgba(255,60,100,0.03)); }
+.bg-aurora-yellow-soft{ background: linear-gradient(135deg, rgba(255,200,80,0.06), rgba(255,200,80,0.03)); }
+
+/* stat cards */
+.stat-card{
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  border-radius: 14px; padding:16px; border:1px solid rgba(255,255,255,0.03);
+  box-shadow: 0 8px 30px rgba(10,6,20,0.55);
+}
+
+/* stat icon */
+.stat-icon{ width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center; }
+
+/* small text helper */
+.text-aurora-muted{ color: rgba(255,255,255,0.72); }
+
+/* colored tokens for icons */
+.text-aurora-green{ color: #6FE7C1; }
+.text-aurora-blue{ color: #8FD3FF; }
+.text-aurora-purple{ color: #C48FFF; }
+.text-aurora-red{ color: #FF93B8; }
+.text-aurora-yellow{ color: #FFD89C; }
+.text-aurora-orange{ color: #FFB07C; }
+
+/* tab styles */
+.tab-active{
+  background: linear-gradient(90deg, rgba(200,120,255,0.18), rgba(255,60,160,0.12));
+  color: white;
+  box-shadow: 0 8px 26px rgba(150,40,255,0.12);
+}
+.tab-inactive{ color: rgba(255,255,255,0.75); }
+
+/* hover background used widely */
+.aurora-hover{ background: rgba(255,255,255,0.02); }
+
+/* border accent token for subtle borders */
+.border-aurora\/20{ border-color: rgba(200,120,255,0.08) !important; }
+
+/* small responsive tweaks */
+@media (max-width: 768px){
+  aside{ position: absolute; z-index: 30; }
+  .card-aurora{ border-radius: 12px; }
+}
+
+/* RaiseIssue helpers (add after aurora theme) */
+
+.input-aurora{
+  width:100%;
+  padding:12px 14px;
+  border-radius:12px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  border:1px solid rgba(255,255,255,0.04);
+  color: #fff;
+  transition: box-shadow .15s ease, transform .08s ease;
+}
+.input-aurora::placeholder{ color: rgba(255,255,255,0.45); }
+.input-aurora:focus{
+  outline: none;
+  box-shadow: 0 8px 30px rgba(150,40,255,0.06);
+  border-color: rgba(200,120,255,0.18);
+  transform: translateY(-1px);
+}
+
+/* primary button */
+.btn-aurora{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  padding:12px 16px;
+  border-radius:12px;
+  background: linear-gradient(90deg, rgba(200,120,255,0.22), rgba(255,60,160,0.18));
+  border:1px solid rgba(255,255,255,0.04);
+  color: #fff;
+  font-weight:600;
+  transition: transform .12s ease, box-shadow .12s ease;
+  box-shadow: 0 8px 30px rgba(120,40,255,0.06);
+}
+.btn-aurora:hover{ transform: translateY(-2px); box-shadow: 0 12px 40px rgba(120,40,255,0.08); }
+.btn-aurora:disabled{ opacity: .5; cursor:not-allowed; transform:none; box-shadow:none; }
+
+/* small loader */
+.loader-aurora{
+  width:16px;
+  height:16px;
+  border-radius:50%;
+  border:2px solid rgba(255,255,255,0.9);
+  border-top-color: transparent;
+  animation: spin 0.85s linear infinite;
+}
+@keyframes spin{ to { transform: rotate(360deg); } }
+
+/* preview card override for better contrast */
+.preview-card{ padding:14px; border-radius:12px; background: rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.03); }
+.border-aurora-green{ border-color: rgba(111,231,193,0.25) !important; }
+.border-aurora-red{ border-color: rgba(255,147,184,0.18) !important; }
+.text-aurora-green{ color: #6FE7C1; }
+.text-aurora-red{ color: #FF93B8; }
+
+
+
+/* CodeReview specific helpers for Aurora theme */
+
+/* subtle border token classes */
+.border-aurora\/6 { border-color: rgba(200,120,255,0.06) !important; }
+.border-aurora\/10 { border-color: rgba(200,120,255,0.10) !important; }
+
+/* colored bg / border tokens used in rating badges */
+.bg-aurora-green-soft { background: linear-gradient(135deg, rgba(72,255,188,0.06), rgba(72,255,188,0.03)); }
+.bg-aurora-yellow-soft { background: linear-gradient(135deg, rgba(255,200,80,0.06), rgba(255,200,80,0.03)); }
+.bg-aurora-orange-soft { background: linear-gradient(135deg, rgba(255,150,80,0.06), rgba(255,150,80,0.03)); }
+.bg-aurora-red-soft { background: linear-gradient(135deg, rgba(255,60,100,0.06), rgba(255,60,100,0.03)); }
+.border-aurora-green-soft { border: 1px solid rgba(111,231,193,0.08); }
+.border-aurora-yellow-soft { border: 1px solid rgba(255,216,140,0.08); }
+.border-aurora-orange-soft { border: 1px solid rgba(255,165,97,0.08); }
+.border-aurora-red-soft { border: 1px solid rgba(255,147,184,0.06); }
+
+/* small component adjustments */
+.stat-icon { width:48px; height:48px; border-radius:12px; display:flex; align-items:center; justify-content:center; }
+.stat-card { border-radius:14px; }
+
+/* ensure pre styling looks good */
+.card-aurora pre { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", "Courier New", monospace; color: rgba(255,255,255,0.9); }
+
+/* slightly stronger hover for code blocks */
+.card-aurora .bg-gray-900\/30:hover { transform: translateY(-2px); transition: transform .12s ease; }
+
+/* small responsive tweak */
+@media (max-width: 640px) {
+  .stat-icon { width:40px; height:40px; }
+  .logo-aurora { width:40px; height:40px; border-radius:10px; }
+}
