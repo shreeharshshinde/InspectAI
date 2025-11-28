@@ -290,7 +290,7 @@ const Page = () => {
               </div>
 
               <div className="flex items-center gap-4">
-                <div className="text-xs text-aurora-muted">InspectAI v2.1.0</div>
+                {/* <div className="text-xs text-aurora-muted">InspectAI v2.1.0</div> */}
               </div>
             </div>
           </header>
@@ -561,7 +561,8 @@ ISSUE-215,API response validation,Medium,Open,2025-10-24`}</pre>
           {/* footer */}
           <footer className="mt-6 text-center text-xs text-aurora-muted">
             <div className="flex items-center justify-center gap-4">
-              <span>InspectAI v2.1.0</span>
+              {/* <span>InspectAI v2.1.0</span> */}
+              <span>InspectAI</span>
               <span className="w-1 h-1 bg-aurora-muted rounded-full" />
               <span>AI-powered code analysis</span>
             </div>

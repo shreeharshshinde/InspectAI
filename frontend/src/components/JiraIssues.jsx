@@ -28,12 +28,34 @@ const JiraIssues = () => {
   });
 
   // Fetch issues
+  // const fetchIssues = async () => {
+  //   try {
+  //     setLoading(true);
+  //     const response = await axios.get(`${API_BASE_URL}/issues`, {
+  //       headers: { "Cache-Control": "no-cache", Pragma: "no-cache" },
+  //     });
+  //     console.log(response.data.issues)
+  //     setIssues(response.data.issues || []);
+  //   } catch (err) {
+  //     setError(err.response?.data?.error || err.message);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
+
+
   const fetchIssues = async () => {
     try {
       setLoading(true);
       const response = await axios.get(`${API_BASE_URL}/issues`, {
         headers: { "Cache-Control": "no-cache", Pragma: "no-cache" },
       });
+
+      // Print status.name for each issue
+      (response.data.issues || []).forEach((issue, idx) => {
+        console.log(`Issue ${idx + 1}:`, issue.key, "-", issue.fields?.status?.name ?? "NO_STATUS");
+      });
+
       setIssues(response.data.issues || []);
     } catch (err) {
       setError(err.response?.data?.error || err.message);
@@ -41,6 +63,7 @@ const JiraIssues = () => {
       setLoading(false);
     }
   };
+
 
   useEffect(() => {
     fetchIssues();
